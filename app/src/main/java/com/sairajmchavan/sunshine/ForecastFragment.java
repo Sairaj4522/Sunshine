@@ -39,7 +39,12 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
     private final String LOG_TAG = ForecastFragment.class.getSimpleName();
-    ArrayAdapter<String> _adapter;
+
+    private ArrayAdapter<String> _adapter;
+
+    public ArrayAdapter<String> get_adapter() {
+        return _adapter;
+    }
     public ForecastFragment() {
     }
 
@@ -215,7 +220,7 @@ public class ForecastFragment extends Fragment {
         @Override
         protected void onPostExecute(String[] strings) {
             super.onPostExecute(strings);
-            if(strings != null) {
+            if(strings != null && _adapter != null) {
                 _adapter.clear();
                 for(int i = 0; i < strings.length; i++){
                     _adapter.add(strings[i]);
@@ -226,8 +231,8 @@ public class ForecastFragment extends Fragment {
         }
 
         /* The date/time conversion code is going to be moved outside the asynctask later,
-         * so for convenience we're breaking it out into its own method now.
-         */
+                * so for convenience we're breaking it out into its own method now.
+                */
         private String getReadableDateString(long time){
             // Because the API returns a unix timestamp (measured in seconds),
             // it must be converted to milliseconds in order to be converted to valid date.
@@ -236,8 +241,8 @@ public class ForecastFragment extends Fragment {
         }
 
         /**
-         * Prepare the weather high/lows for presentation.
-         */
+                * Prepare the weather high/lows for presentation.
+        */
         private String formatHighLows(double high, double low) {
 
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -257,13 +262,14 @@ public class ForecastFragment extends Fragment {
             return highLowStr;
         }
 
-        /**
-         * Take the String representing the complete forecast in JSON Format and
-         * pull out the data we need to construct the Strings needed for the wireframes.
-         *
-         * Fortunately parsing is easy:  constructor takes the JSON string and converts it
-         * into an Object hierarchy for us.
-         */
+        /*//**
+                * Take the String representing the complete forecast in JSON Format and
+        * pull out the data we need to construct the Strings needed for the wireframes.
+                *
+                * Fortunately parsing is easy:  constructor takes the JSON string and converts it
+        * into an Object hierarchy for us.
+        */
+
         private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
                 throws JSONException {
 
