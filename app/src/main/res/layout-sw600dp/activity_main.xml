@@ -1,7 +1,28 @@
-<fragment
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    class="com.sairajmchavan.sunshine.ForecastFragment"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:layout="@layout/fragment_forecast" />
+    android:layout_width="match_parent"
+    android:baselineAligned="false"
+    android:divider="?android:attr/dividerHorizontal"
+    android:orientation="horizontal"
+    tools:context=".MainActivity"
+    >
+
+    <!-- This layout is two pane layout for the Items master/detail flow. -->
+    <fragment
+        class="com.sairajmchavan.sunshine.ForecastFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        tools:layout="@layout/fragment_forecast"
+        />
+
+    <FrameLayout
+        android:id='@+id/weather_detail_container'
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        />
+
+</LinearLayout>

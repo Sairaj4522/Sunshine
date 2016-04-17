@@ -14,6 +14,12 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        if(savedInstanceState == null){
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.weather_detail_container, new DetailActivityFragment())
+                    .commit();
+        }
+
         //Setup up button in action bar to enable in app navigation
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
