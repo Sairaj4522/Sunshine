@@ -26,7 +26,7 @@ import com.sairajmchavan.sunshine.data.WeatherContract;
  * A placeholder fragment containing a simple view.
  */
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
-    private static final int LOADER_ID = 0;
+    private static final int FORECAST_LOADER_ID = 0;
 
     private final String LOG_TAG = ForecastFragment.class.getSimpleName();
 
@@ -70,7 +70,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(LOADER_ID, null, this);
+        getLoaderManager().initLoader(FORECAST_LOADER_ID, null, this);
     }
 
     @Override
@@ -108,6 +108,12 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         });
 
         return rootView;
+    }
+
+    // since we read the location when we create the loader, all we need to do is restart things
+    void onLocationChanged( ) {
+        updateWeather();
+        getLoaderManager().restartLoader(FORECAST_LOADER_ID, null, this);
     }
 
     private void updateWeather(){

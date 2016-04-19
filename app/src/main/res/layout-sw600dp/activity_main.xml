@@ -12,6 +12,7 @@
     <!-- This layout is two pane layout for the Items master/detail flow. -->
     <fragment
         class="com.sairajmchavan.sunshine.ForecastFragment"
+        android:id="@+id/fragment_forecast"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
