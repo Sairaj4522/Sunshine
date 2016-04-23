@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sairajmchavan.sunshine.DetailActivityFragment"
+    tools:context=".DetailFragment"
     tools:showIn="@layout/activity_detail">
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,11 +14,17 @@
             android:id="@+id/detail_day_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_day_text_size"
+            android:fontFamily="@string/condensed"
             />
         <TextView
             android:id="@+id/detail_date_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_date_text_size"
+            android:textColor="@color/light_text_color"
+            android:fontFamily="@string/condensed"
+            android:layout_marginTop="@dimen/detail_in_element_spacing"
             />
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,16 +37,22 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
+                android:gravity="center_horizontal"
                 >
                 <TextView
                     android:id="@+id/detail_high_temp_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="@dimen/detail_high_temp_text_size"
+                    android:fontFamily="@string/light"
                     />
                 <TextView
                     android:id="@+id/detail_low_temp_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="@dimen/detail_low_temp_text_size"
+                    android:textColor="@color/light_text_color"
+                    android:fontFamily="@string/light"
                     />
             </LinearLayout>
             <LinearLayout
@@ -53,12 +65,14 @@
                     android:id="@+id/detail_icon"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:src="@mipmap/ic_launcher"
                     />
                 <TextView
                     android:id="@+id/detail_forecast_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="@dimen/detail_weather_detail_text_size"
+                    android:textColor="@color/light_text_color"
+                    android:fontFamily="@string/condensed"
                     />
             </LinearLayout>
         </LinearLayout>
@@ -66,16 +80,25 @@
             android:id="@+id/detail_humidity_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_weather_detail_text_size"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@string/light"
             />
         <TextView
             android:id="@+id/detail_wind_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_weather_detail_text_size"
+            android:layout_marginTop="@dimen/detail_in_element_spacing"
+            android:fontFamily="@string/light"
             />
         <TextView
             android:id="@+id/detail_pressure_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_weather_detail_text_size"
+            android:layout_marginTop="@dimen/detail_in_element_spacing"
+            android:fontFamily="@string/light"
             />
         </LinearLayout>
 </ScrollView>

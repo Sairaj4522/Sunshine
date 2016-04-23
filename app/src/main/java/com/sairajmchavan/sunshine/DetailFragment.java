@@ -2,7 +2,10 @@ package com.sairajmchavan.sunshine;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -26,15 +29,18 @@ import com.sairajmchavan.sunshine.data.WeatherContract;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
-    private static final int LOADER_ID = 1;
+public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+    private static final int DETAIL_LOADER_ID = 1;
 
     private final String LOG_TAG = DetailActivity.class.getSimpleName();
 
     private final String FORECAST_SHARE_HASHTAG = "#SunshineApp";
 
+    static final String DETAIL_URI = "URI";
+
     private String mForecast;
     private ShareActionProvider mShareActionProvider;
+    private Uri mUri;
 
     // For the forecast view we're showing only a small subset of the stored data.
     // Specify the columns we need.
@@ -84,19 +90,33 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
     private TextView mWindView;
 
 
-    public DetailActivityFragment() {
+    public DetailFragment() {
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(LOADER_ID, null, this);
+    void onLocationChanged( String newLocation ) {
+        // replace the uri, since the location has changed
+        Uri uri = mUri;
+        if (null != uri) {
+            long date = WeatherContract.WeatherEntry.getDateFromUri(uri);
+            Uri updatedUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(newLocation, date);
+            mUri = updatedUri;
+            getLoaderManager().restartLoader(DETAIL_LOADER_ID, null, this);
+        }
+    }
+
+    void kickStartDetailLoader(){
+        getLoaderManager().initLoader(DETAIL_LOADER_ID, null, this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mUri = arguments.getParcelable(DetailFragment.DETAIL_URI);
+        }
+
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
         mDayView = (TextView) rootView.findViewById(R.id.detail_day_textview);
@@ -111,6 +131,13 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
         return rootView;
     }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        kickStartDetailLoader();
+        super.onActivityCreated(savedInstanceState);
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -135,22 +162,21 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.v(LOG_TAG, "In onCreateLoader");
-
-        Intent intent = getActivity().getIntent();
-
-        if(intent == null){
-            return  null;
+        if(null != mUri){
+            // Now create and return a CursorLoader that will take care of
+            // creating a Cursor for the data being displayed.
+            return new CursorLoader(getContext(),
+                    mUri,
+                    DETAIL_COLUMNS,
+                    null,
+                    null,
+                    null
+            );
         }
 
-        return new CursorLoader(getContext(),
-                intent.getData(),
-                DETAIL_COLUMNS,
-                null,
-                null,
-                null
-                );
+        return null;
     }
+
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -164,12 +190,13 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             mDayView.setText(Utility.getDayName(getContext(), dateInMillis));
             mDateView.setText(dateText);
 
+            String shortDesc = data.getString(COL_WEATHER_DESC);
+            mDescView.setText(shortDesc);
+
             // Read weather id from cursor and update icon in the view
             int iconID = data.getInt(COL_WEATHER_CONDITION_ID);
             mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(iconID));
-
-            String shortDesc = data.getString(COL_WEATHER_DESC);
-            mDescView.setText(shortDesc);
+            mIconView.setContentDescription(shortDesc);
 
             // Read user selected units from preference
             boolean isMetric = Utility.isMetric(getActivity());
