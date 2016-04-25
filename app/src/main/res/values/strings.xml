@@ -64,4 +64,8 @@
     <!-- fonts -->
     <string name="condensed">sans-serif-condensed</string>
     <string name="light">sans-serif-light</string>
+
+    <!-- Sync Adapter -->
+    <string name="content_authority">com.sairajmchavan.sunshine</string>
+    <string name="sync_account_type">com.sairajmchavan.datasync</string>
 </resources>
