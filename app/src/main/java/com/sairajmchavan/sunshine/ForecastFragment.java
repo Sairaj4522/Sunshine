@@ -28,6 +28,7 @@ import android.widget.ListView;
 
 import com.sairajmchavan.sunshine.data.WeatherContract;
 import com.sairajmchavan.sunshine.service.SunshineService;
+import com.sairajmchavan.sunshine.sync.SunshineSyncAdapter;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -93,7 +94,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     public void onStart() {
         super.onStart();
-        updateWeather();
+        //updateWeather();
     }
 
     @Override
@@ -156,7 +157,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
 
     private void updateWeather(){
-        Intent alarmIntent = new Intent(getActivity(), SunshineService.AlarmReceiver.class);
+        /*Intent alarmIntent = new Intent(getActivity(), SunshineService.AlarmReceiver.class);
 
         alarmIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA,
                 Utility.getPreferredLocation(getActivity()));
@@ -167,7 +168,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
-        getActivity().startService(alarmIntent);
+        getActivity().startService(alarmIntent);*/
+
+        SunshineSyncAdapter.syncImmediately(getActivity());
     }
 
     @Override
