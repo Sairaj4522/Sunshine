@@ -198,17 +198,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(iconID));
             mIconView.setContentDescription(shortDesc);
 
-            // Read user selected units from preference
-            boolean isMetric = Utility.isMetric(getActivity());
-
             // Read high temperature from cursor and update view
-            String high = Utility.formatTemperature(getContext(), data.getLong(COL_WEATHER_MAX_TEMP),
-                            isMetric);
+            String high = Utility.formatTemperature(getContext(), data.getLong(COL_WEATHER_MAX_TEMP));
             mHighTempView.setText(high);
 
             // Read low temperature from cursor and update view
-            String low = Utility.formatTemperature(getContext(), data.getLong(COL_WEATHER_MIN_TEMP),
-                            isMetric);
+            String low = Utility.formatTemperature(getContext(), data.getLong(COL_WEATHER_MIN_TEMP));
             mLowTempView.setText(low);
 
             // Read humidity from cursor and update view

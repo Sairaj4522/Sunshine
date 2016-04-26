@@ -232,6 +232,12 @@ public class Utility {
                 context.getString(R.string.pref_default_location));
     }
 
+    public static boolean getNotificationStatus(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(context.getString(R.string.pref_enable_notifications_key),
+                Boolean.parseBoolean(context.getString(R.string.pref_enable_notifications_default)));
+    }
+
     public static boolean isMetric(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(context.getString(R.string.pref_units_key),
@@ -239,9 +245,9 @@ public class Utility {
                     .equals(context.getString(R.string.pref_units_metric));
     }
 
-    static String formatTemperature(Context context, double temperature, boolean isMetric) {
+    public static String formatTemperature(Context context, double temperature) {
         double temp;
-        if ( !isMetric ) {
+        if ( !(Utility.isMetric(context)) ) {
             temp = 9*temperature/5+32;
         } else {
             temp = temperature;
@@ -249,7 +255,7 @@ public class Utility {
         return context.getString(R.string.format_temperature, temp);
     }
 
-    static String formatDate(long dateInMillis) {
+    public  static String formatDate(long dateInMillis) {
         Date date = new Date(dateInMillis);
         return DateFormat.getDateInstance().format(date);
     }
